@@ -1,0 +1,8 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+drafts/
+out/full_analysis/
+data/02_a_traits-AVONET_supplementary_dataeset_1.xlsx
