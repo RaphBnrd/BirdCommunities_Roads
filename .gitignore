@@ -3,6 +3,16 @@
 .RData
 .Ruserdata
 
+**/.DS_Store
+
 drafts/
-out/full_analysis/
+# out/full_analysis/
 data/02_a_traits-AVONET_supplementary_dataeset_1.xlsx
+
+analyze_setup/mapbox_token.txt
+analyze_setup/*
+!analyze_setup/01_check_vegetation_cover.R
+!analyze_setup/Plot selection/
+!analyze_setup/out/
+analyze_setup/out/*
+!analyze_setup/out/comparisons_canopy_cover_plot_type.txt

@@ -740,15 +740,21 @@ df.traits.per.plot$type = factor(gsub(".*[_]([^_]+)[_].*", "\\1",
                                 levels = metadata_input$order_types)
 df.traits.per.plot$round = as.factor(sub(".*_", "", rownames(df.traits.per.plot) ))
 
-
-
+# Save the average functional traits per plot
+if (metadata_exe$do_we_save_plots) {
+  write.csv(
+    df.traits.per.plot, 
+    file = paste0(metadata_exe$main_folder_fig, '/csv', "/supp_mat_S14-weighted_average_functional_traits_per_plot.csv"), 
+    row.names = FALSE
+  )
+}
 
 
 apply_tukey_tests(df.traits.per.plot, traits_name_test, traits_name_test_labels, 
                   x_value = "type", x_label = "Type", 
                   type_models = c("gamma", "gamma", "gamma"), rd_eff = "loc",
                   sort_x_groups = c(FALSE, FALSE, FALSE), 
-                  prefix_plots = c("supp_mat_S10", "04-figure_4"), range_y_plot_comp = NULL)
+                  prefix_plots = c("supp_mat_S15", "04-figure_4"), range_y_plot_comp = NULL)
 
 
 
@@ -775,6 +781,76 @@ for (i in 1:length(list_mat)) {
   data.scores.sites$type = types_in_mat
   data.scores.species$species = rownames(data.scores.species)
   
+  
+  # * * * Dot products sites - species * * *
+  
+  # For each species, compute the dot product with the sites (coordinates in the NMDS space)
+  dot_products_sites_species = data.scores.sites
+  for (this_species in data.scores.species$species) {
+    vect_NDMS_this_species = as.numeric(data.scores.species[data.scores.species$species == this_species, c("NMDS1", "NMDS2")])
+    dot_products_sites_species[[this_species]] = 
+      dot_products_sites_species$NMDS1 * vect_NDMS_this_species[1] +
+      dot_products_sites_species$NMDS2 * vect_NDMS_this_species[2]
+  }
+  dot_products_sites_species = dot_products_sites_species %>% 
+    mutate(type = factor(type, levels = metadata_input$order_types))
+  
+  # Boxplot of the dot products per species and type of plot
+  plot.box.dot.product.NMDS <- dot_products_sites_species %>% 
+    pivot_longer(cols = -c(NMDS1, NMDS2, type), names_to = "species", values_to = "dot_product") %>% 
+    ggplot(aes(x = type, y = dot_product, fill = type)) +
+    facet_wrap(~species, scales = "free_y") +
+    geom_boxplot() + 
+    scale_fill_manual(values = palette_types_subplots) +
+    labs(x = "Type of plot",
+         y = "Dot product of NMDS coordinates between species and visits") + 
+    theme_minimal() + 
+    theme(legend.position = "none", 
+          axis.text.x = element_text(size = 10, angle = 90, vjust = 0.5, hjust = 0.5),
+          strip.text = element_text(size = 7, face = "bold"))
+          
+  
+  # Average dot products per species and type of plot
+  means_dot_products_sites_species = dot_products_sites_species %>% 
+    group_by(type) %>%
+    summarise(across(!c(NMDS1, NMDS2), mean)) %>% 
+    pivot_longer(cols = -type, names_to = "species", values_to = "dot_product")
+  
+  plot.avg.dot.product.NMDS <- means_dot_products_sites_species %>% 
+    mutate(species = factor(
+      species, 
+      levels = means_dot_products_sites_species %>% 
+        filter(type == 'forest') %>% arrange(dot_product) %>% pull(species)
+    )) %>% 
+    ggplot(aes(x = type, y = species, fill = dot_product)) +
+    geom_tile(color = '#555555') +
+    scale_fill_gradient2(low = "royalblue3", mid = "white", high = "forestgreen", midpoint = 0) +
+    labs(x = "Type of plot", y = "Species", 
+         fill = "Average dot product\nof NMDS coordinates\nbetween species and visits,\nper type of plots") +
+    theme_minimal() + 
+    # Adjust legend position below the graph but a bit to the left
+    # theme(legend.position = c(0.2, -0.05), legend.direction = "horizontal")
+    theme(legend.position = "bottom", 
+          legend.text = element_text(size = 6, angle = 45, hjust = 1, vjust = 1.3),
+          legend.title = element_text(size = 10), 
+          legend.box = "horizontal", 
+          legend.box.just = "left", 
+          legend.margin = margin(t = 0, r = 0.4, b = 0, l = 0, unit = "cm"),
+          legend.spacing.x = unit(0.1, "cm"),
+          legend.key.size = unit(0.4, "cm"))
+  
+  # Save these plots
+  if (metadata_exe$do_we_save_plots) {
+    for (type_plot in metadata_exe$types_plots){
+      ggsave(paste0(metadata_exe$main_folder_fig, type_plot, "/supp_mat_S12-nmds-dot_product_species_sites-box-", 
+                    dissim_meth, "-", label_mat[i], ".", type_plot), 
+             plot = plot.box.dot.product.NMDS, width = 13, height = 13)
+      ggsave(paste0(metadata_exe$main_folder_fig, type_plot, "/supp_mat_S13-nmds-dot_product_species_sites-avg-", 
+                    dissim_meth, "-", label_mat[i], ".", type_plot), 
+             plot = plot.avg.dot.product.NMDS, width = 5, height = 8)
+    }
+  }
+    
   
   # * * * Plot sites * * *
   
@@ -829,7 +905,7 @@ for (i in 1:length(list_mat)) {
       ggsave(paste0(metadata_exe$main_folder_fig, type_plot, "/02-figure_3-nmds-sites-", 
                     dissim_meth, "-", label_mat[i], ".", type_plot), 
              plot = plot.sites, width = 7, height = 5)
-      ggsave(paste0(metadata_exe$main_folder_fig, type_plot, "/", "supp_mat_S11-nmds-sites_with_labels-", 
+      ggsave(paste0(metadata_exe$main_folder_fig, type_plot, "/", "supp_mat_S10-nmds-sites_with_labels-", 
                     dissim_meth, "-", label_mat[i], ".", type_plot), 
              plot = plot.sites.labels, width = 7, height = 5)
     }
@@ -857,7 +933,7 @@ for (i in 1:length(list_mat)) {
   # Save
   if (metadata_exe$do_we_save_plots) {
     for (type_plot in metadata_exe$types_plots){
-      ggsave(paste0(metadata_exe$main_folder_fig, type_plot, "/", "supp_mat_S12-nmds-species-", 
+      ggsave(paste0(metadata_exe$main_folder_fig, type_plot, "/", "supp_mat_S11-nmds-species-", 
                     dissim_meth, "-", label_mat[i], ".", type_plot), 
              plot = p_S10, width = 7, height = 5)
     }
@@ -941,13 +1017,13 @@ for (i in 1:length(list_mat)) {
   
   # Save the results of the tests
   if (metadata_exe$do_we_save_plots) {
-    sink(paste0(metadata_exe$main_folder_fig, type_plot, "/csv",
+    sink(paste0(metadata_exe$main_folder_fig, "csv/",
                 "supp_mat_S09-indicator_species_analysis-summary_model-", 
                 dissim_meth, "-", label_mat[i], ".txt"))
     summary(inv, alpha = 1)
     sink()
     write.csv(inv$sign[order(inv$sign$p.value), ], row.names = FALSE, 
-              file = paste0(metadata_exe$main_folder_fig,
+              file = paste0(metadata_exe$main_folder_fig, "csv/",
                             "supp_mat_S09-indicator_species_analysis-all_species-", 
                             dissim_meth, "-", label_mat[i], ".csv") )
   }
@@ -981,7 +1057,7 @@ for (i in 1:length(list_mat)) {
                       labels = c("Represented", "Not concerned"),
                       breaks = c("#31a6f7", "grey")) +
     theme_bw() +
-    labs(fill = "Subplot types of the\nindicator species") + 
+    labs(fill = "Plot types of the\nindicator species") + 
     theme(axis.title.x = element_blank(), axis.title.y = element_blank(),
           legend.position = "bottom")
   if (metadata_exe$do_we_save_plots) {

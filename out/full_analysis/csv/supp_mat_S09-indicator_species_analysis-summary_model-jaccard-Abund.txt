@@ -1,0 +1,101 @@
+
+ Multilevel pattern analysis
+ ---------------------------
+
+ Association function: r.g
+ Significance level (alpha): 1
+
+ Total number of species: 46
+ Selected number of species: 46 
+ Number of species associated to 1 group: 14 
+ Number of species associated to 2 groups: 24 
+ Number of species associated to 3 groups: 8 
+
+ List of species associated to each combination: 
+
+ Group forest  #sps.  3 
+               stat p.value   
+Eurasian Wren 0.343   0.006 **
+Red Crossbill 0.223   0.210   
+Wood Pigeon   0.134   0.648   
+
+ Group road  #sps.  3 
+                 stat p.value
+Dunnock         0.218   0.264
+Eurasian Magpie 0.186   1.000
+Willow Tit      0.186   1.000
+
+ Group edge  #sps.  8 
+                  stat p.value   
+Blue Tit         0.420   0.002 **
+Eurasian Skylark 0.400   0.004 **
+Great Tit        0.395   0.003 **
+Fieldfare        0.325   0.010 **
+Yellowhammer     0.325   0.063 . 
+Carrion Crow     0.312   0.025 * 
+Rook             0.186   1.000   
+Hooded Crow      0.186   1.000   
+
+ Group forest+path  #sps.  4 
+                    stat p.value   
+Goldcrest          0.365   0.003 **
+Crested Tit        0.299   0.046 * 
+Eurasian Blackbird 0.131   0.631   
+Common Chaffinch   0.112   0.753   
+
+ Group forest+road  #sps.  3 
+                    stat p.value
+Common Raven       0.152   1.000
+Black Woodpecker   0.152   1.000
+Eurasian Bullfinch 0.129   0.745
+
+ Group forest+edge  #sps.  4 
+               stat p.value
+Mistle Thrush 0.247   0.105
+Firecrest     0.222   0.165
+Song Thrush   0.161   0.457
+Goldfinch     0.123   0.904
+
+ Group path+road  #sps.  2 
+              stat p.value
+Coal Tit     0.221   0.148
+Eurasian Jay 0.083   0.829
+
+ Group path+edge  #sps.  5 
+                   stat p.value
+Eurasian Nuthatch 0.194   0.359
+Green Woodpecker  0.152   1.000
+Garden Warbler    0.152   1.000
+Long-tailed Tit   0.147   0.765
+Eurasian Siskin   0.129   0.706
+
+ Group road+edge  #sps.  6 
+                   stat p.value
+Hawfinch          0.218   0.330
+Willow Warbler    0.188   0.644
+Greenfinch        0.182   0.429
+Common Redstart   0.164   0.642
+Black Redstart    0.152   1.000
+Common Chiffchaff 0.110   0.787
+
+ Group forest+path+road  #sps.  2 
+                      stat p.value
+Eurasian Treecreeper 0.254   0.111
+European Robin       0.218   0.192
+
+ Group forest+path+edge  #sps.  3 
+                          stat p.value
+Short-toed Treecreeper   0.210   0.303
+Spotted Flycatcher       0.108   1.000
+Great Spotted Woodpecker 0.050   0.989
+
+ Group forest+road+edge  #sps.  2 
+                stat p.value
+Marsh Tit      0.108       1
+Common Buzzard 0.102       1
+
+ Group path+road+edge  #sps.  1 
+                  stat p.value
+Eurasian Blackcap 0.13   0.705
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
