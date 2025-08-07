@@ -1,7 +1,0 @@
-{
-  "data_input": "data/01_b_surveys-clean_data.csv",
-  "trait_data": "data/02_b_traits-clean_data.RData",
-  "do_we_save_plots": true,
-  "types_plots": ["pdf", "png"],
-  "main_folder_fig": "out/full_analysis/"
-}

@@ -1,7 +1,0 @@
-{
-  "col_name_site": "cfb_plot_num",
-  "col_name_type": "type_plot",
-  "col_name_day": "day",
-  "order_types": ["forest", "path", "road", "edge"],
-  "species_selected": ["Coal Tit", "Crested Tit", "Goldcrest", "European Robin", "Common Chaffinch", "Eurasian Blackbird", "Eurasian Wren", "Mistle Thrush", "Common Chiffchaff", "Song Thrush", "Great Tit", "Eurasian Jay", "Fieldfare", "Green Woodpecker", "Carrion Crow", "Blue Tit", "Eurasian Blackcap", "Eurasian Treecreeper", "Firecrest", "Great Spotted Woodpecker", "Goldfinch", "Eurasian Nuthatch", "Eurasian Bullfinch", "Common Buzzard", "Wood Pigeon", "Greenfinch", "Red Crossbill", "Short-toed Treecreeper", "Common Redstart", "Common Raven", "Long-tailed Tit", "Eurasian Siskin", "Dunnock", "Eurasian Skylark", "Willow Warbler", "Black Redstart", "Yellowhammer", "Rook", "Spotted Flycatcher", "Hawfinch", "Eurasian Magpie", "Marsh Tit", "Hooded Crow", "Garden Warbler", "Black Woodpecker", "Willow Tit"]
-}

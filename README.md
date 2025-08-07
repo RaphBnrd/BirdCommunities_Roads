@@ -2,7 +2,7 @@
 
 ## Description
 
-This repository contains the code and data used in our study on the *Effects of linear openings in forest canopy on temperate bird communities*.
+This repository contains the code and data used in our study on the *Effects of linear openings in forest on temperate bird communities*.
 
 ## Dependencies
 

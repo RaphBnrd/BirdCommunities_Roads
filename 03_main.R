@@ -3,7 +3,6 @@
 
 # Clean version of the code used in the manuscript in a single file
 
-
 # Import packages ---------------------------------------------------------
 
 library(tidyverse)
@@ -719,6 +718,46 @@ apply_tukey_tests(df_dissim_plot,
 
 
 load(metadata_exe$trait_data)
+load("data/02_b_traits-clean_data.RData") # traits_data
+
+# Figure Appendix 1 (Table all species)
+
+a1 = matAb %>% 
+  as.data.frame() %>% 
+  mutate(type = paste0(gsub(".*[_]([^_]+)[_].*", "\\1", rownames(.)), "_abund")) %>% 
+  group_by(type) %>%
+  summarise(across(everything(), ~sum(.))) %>% 
+  pivot_longer(cols = -type, names_to = "species", values_to = "abundance") %>% 
+  pivot_wider(names_from = type, values_from = abundance)
+a1 = a1[, c("species", "forest_abund", "path_abund", "road_abund", "edge_abund")]
+a1$total_abund = rowSums(a1[, -1])
+
+a2 = matPA %>% 
+  as.data.frame() %>% 
+  mutate(type = paste0(gsub(".*[_]([^_]+)[_].*", "\\1", rownames(.)), "_PA")) %>% 
+  group_by(type) %>%
+  summarise(across(everything(), ~sum(.))) %>% 
+  pivot_longer(cols = -type, names_to = "species", values_to = "presence") %>% 
+  pivot_wider(names_from = type, values_from = presence)
+a2 = a2[, c("species", "forest_PA", "path_PA", "road_PA", "edge_PA")]
+a2$total_PA = rowSums(a2[, -1])
+
+a3 = traits_data %>% 
+  dplyr::select(english.name, Mass, Hand.Wing.Index)
+
+table_all_species_counts_and_traits = a1 %>% 
+  left_join(a2, by = "species") %>% 
+  left_join(a3, by = c("species" = "english.name")) %>% 
+  arrange(desc(total_abund)) %>% 
+  write.csv(
+    file = paste0(metadata_exe$main_folder_fig, "csv/appendix_01-table_all_species_counts_and_traits.csv"),
+    row.names = FALSE
+  )
+rm(a1, a2, a3)
+  
+
+# Traits analysis
+
 avonet_func_data = traits_data
 rm(traits_data)
 
@@ -754,7 +793,7 @@ apply_tukey_tests(df.traits.per.plot, traits_name_test, traits_name_test_labels,
                   x_value = "type", x_label = "Type", 
                   type_models = c("gamma", "gamma", "gamma"), rd_eff = "loc",
                   sort_x_groups = c(FALSE, FALSE, FALSE), 
-                  prefix_plots = c("supp_mat_S15", "04-figure_4"), range_y_plot_comp = NULL)
+                  prefix_plots = c("supp_mat_S15", "05-figure_5"), range_y_plot_comp = NULL)
 
 
 
@@ -958,7 +997,7 @@ for (i in 1:length(list_mat)) {
   # Save
   if (metadata_exe$do_we_save_plots) {
     for (type_plot in metadata_exe$types_plots){
-      ggsave(paste0(metadata_exe$main_folder_fig, type_plot, "/", "supp_mat_S07-nmds-species_and_sites-", 
+      ggsave(paste0(metadata_exe$main_folder_fig, type_plot, "/", "appendix_02-nmds-species_and_sites-", 
                     dissim_meth, "-", label_mat[i], ".", type_plot),
              plot = p_S11, width = 7, height = 5)
     }
@@ -1018,13 +1057,13 @@ for (i in 1:length(list_mat)) {
   # Save the results of the tests
   if (metadata_exe$do_we_save_plots) {
     sink(paste0(metadata_exe$main_folder_fig, "csv/",
-                "supp_mat_S09-indicator_species_analysis-summary_model-", 
+                "04-figure_4-indicator_species_analysis-summary_model-", 
                 dissim_meth, "-", label_mat[i], ".txt"))
     summary(inv, alpha = 1)
     sink()
     write.csv(inv$sign[order(inv$sign$p.value), ], row.names = FALSE, 
               file = paste0(metadata_exe$main_folder_fig, "csv/",
-                            "supp_mat_S09-indicator_species_analysis-all_species-", 
+                            "04-figure_4-indicator_species_analysis-all_species-", 
                             dissim_meth, "-", label_mat[i], ".csv") )
   }
   
@@ -1062,7 +1101,7 @@ for (i in 1:length(list_mat)) {
           legend.position = "bottom")
   if (metadata_exe$do_we_save_plots) {
     for (type_plot in metadata_exe$types_plots){
-      ggsave(paste0(metadata_exe$main_folder_fig, type_plot, "/", "supp_mat_S09-indicator_species_analysis-", 
+      ggsave(paste0(metadata_exe$main_folder_fig, type_plot, "/", "04-figure_4-indicator_species_analysis-", 
                     dissim_meth, "-", label_mat[i], ".", type_plot), 
              plot = last_plot(), width = 5.5, height = 8)
     }
