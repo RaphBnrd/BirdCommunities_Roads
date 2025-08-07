@@ -6,7 +6,9 @@
 **/.DS_Store
 
 drafts/
-# out/full_analysis/
+
+out/full_analysis/
+
 data/02_a_traits-AVONET_supplementary_dataeset_1.xlsx
 
 analyze_setup/mapbox_token.txt
