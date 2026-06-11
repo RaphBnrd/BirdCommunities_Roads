@@ -2,7 +2,27 @@
 
 ## Description
 
-This repository contains the code and data used in our study on the *Effects of linear openings in forest on temperate bird communities*.
+This repository accompanies:
+
+> Yapu-Alcazar, M., Benerradi, R., Wohlwend, M., Mikusiński, G., Storch, I., & Bhardwaj, M. (2025). *Effects of linear openings in forests on temperate bird communities*. Ecology and Evolution, 15(11), e72466. https://doi.org/10.1002/ece3.72466
+
+You can cite the publication with:
+
+```bibtex
+@article{YapuAlcazar2025,
+  title = {Effects of Linear Openings in Forests on Temperate Bird Communities},
+  volume = {15},
+  ISSN = {2045-7758},
+  url = {http://dx.doi.org/10.1002/ece3.72466},
+  DOI = {10.1002/ece3.72466},
+  number = {11},
+  journal = {Ecology and Evolution},
+  publisher = {Wiley},
+  author = {Yapu‐Alcazar,  Mariela and Benerradi,  Raphaël and Wohlwend,  Michael and Mikusiński,  Grzegorz and Storch,  Ilse and Bhardwaj,  Manisha},
+  year = {2025},
+  month = Nov 
+}
+```
 
 ## Dependencies
 
